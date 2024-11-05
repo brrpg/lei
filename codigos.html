@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="h-100">
+    <head>
+        <title>BRRPG: Constituição Federal</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Vitor Capelli">
+        <link rel="icon" href="./img/logo.png" type="image/png">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://kit.fontawesome.com/7957d4766d.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+        <link href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet">
+        </link>
+        <link href="https://kit-pro.fontawesome.com/releases/v6.6.0/css/pro.min.css" rel="stylesheet">
+        </link>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet">
+        <link href="https://fonts.cdnfonts.com/css/montserrat" rel="stylesheet">
+        <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    </head>
+    <style>
+        .montserrat {
+        font-family: Montserrat;
+        }
+        .poppins {
+        font-family: Poppins;
+        }
+        #chartdiv {
+        width: 100%;
+        height: 500px;
+        }
+        .icon {
+        font-size: 5em;
+        }
+    </style>
+    <body class="bg-light">
+        <main class="container">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <a href="./"
+                    class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none text-reset">
+                <img src="./img/logo.png" class="rounded me-2" height="32"></img>
+                <span class="fs-4 montserrat"></span>
+                </a>
+                <ul class="nav nav-pills poppins">
+                    <li class="nav-item"><a href="./" class="nav-link text-reset">Menu</a></li>
+                    <li class="nav-item"><a href="./constituicao.html" class="nav-link text-reset">Constituição</a></li>
+                    <li class="nav-item"><a href="./codigos.html" class="nav-link text-reset">Códigos</a></li>
+                    <li class="nav-item"><a href="./leis.html" class="nav-link text-reset">Legislação</a></li>
+                    <li class="nav-item"><a href="./regimentos.html" class="nav-link text-reset">Regimentos</a></li>
+                </ul>
+            </header>
+            <div class="py-5 text-center montserrat">
+                <img class="roudend mb-3" src="./img/logo.png" height="80" width="80" style="border-radius: 4px">
+                <h2>BRASIL-RPG</h2>
+                <h4>Portal Legislativo</h4>
+            </div>
+            <div class="row">
+                <ul class="nav nav-pills justify-content-center mt-3 mb-5 fs-5">
+                    <li class="nav-item">
+                        <button class="nav-link" data-target="clpc" data-titulo="Consolidação das Leis de Processo Constitucional">Processo Constitucional</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-target="pc" data-titulo="Código de Processo Civil">Processo Civil</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-target="pe" data-titulo="Código Processo Eleitoral">Processo Eleitoral</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-target="ep" data-titulo="Código de Ética Parlamentar">Ética Parlamentar</button>
+                    </li>
+                </ul>
+                <h2 id="title" class="text-center text-uppercase mb-5 poppins">Códigos</h2>
+                <div id="clpc" style="display: none;left: 0; width: 100%; height: 0; position: relative; padding-bottom: 65em;">
+                    <iframe src="https://docs.google.com/document/d/1aQQWnw79toz8LEeEoc1WESmhD2sTobxm/preview?usp=embed_googleplus" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen></iframe>
+                </div>
+                <div id="pc" style="display: none;left: 0; width: 100%; height: 0; position: relative; padding-bottom: 65em;">
+                    <iframe src="https://docs.google.com/document/d/1RHl4CamV7I7jtmZKAdoioO4VT-NWX_GW/preview?usp=embed_googleplus" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen></iframe>
+                </div>
+                <div id="pe" style="display: none;left: 0; width: 100%; height: 0; position: relative; padding-bottom: 65em;">
+                    <iframe src="https://docs.google.com/document/d/1hjh3OW2EnniMzwyB015s-wYtN7c1vTKv/preview?usp=embed_googleplus" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen></iframe>
+                </div>
+                <div id="ep" style="display: none;left: 0; width: 100%; height: 0; position: relative; padding-bottom: 65em;">
+                    <iframe src="https://docs.google.com/document/d/1KtbyXSi4KE8s3muuLnPBPdts4RHhXb6Z/preview?usp=embed_googleplus" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen></iframe>
+                </div>
+            </div>
+        </main>
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 px-5 my-5 border-top">
+            <div class="col-md-4 d-flex align-items-center">
+                <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                <img src="./img/logo.png" class="rounded" height="56"></img>
+                </a>
+                <div class="ms-2">
+                    <h4 class="mb-3 mb-md-0 text-body-secondary montserrat">BRASIL-RPG</h4>
+                    <p class="mb-0 fs-6"><i class="fa-regular fa-code me-1"></i>Desenvolvido por Vitor Capelli</p>
+                </div>
+            </div>
+        </footer>
+        <script>
+            // Função para verificar se o link atual corresponde ao link da página
+            function highlightActiveLink() {
+                const currentPath = window.location.pathname;
+                const links = document.querySelectorAll('header a'); // Seleciona todos os links dentro do elemento nav
+            
+                links.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href === currentPath) {
+                        link.classList.add('fw-bold'); // Adiciona a classe 'fw-bold' para o link ativo
+                    } else {
+                        link.classList.remove('fw-bold'); // Remove a classe 'fw-bold' dos outros links
+                    }
+                });
+            }
+            
+            // Chama a função quando a página carregar
+            window.onload = highlightActiveLink;
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const botoes = document.querySelectorAll(".nav button");
+                const divs = document.querySelectorAll("div[id]"); // Seleciona todas as divs com id
+                const title = document.getElementById("title");
+
+                botoes.forEach(botao => {
+                    botao.addEventListener("click", () => {
+                        // Oculta todas as divs
+                        divs.forEach(div => {
+                            div.style.display = "none";
+                        });
+
+                        // Exibe a div correspondente ao botão clicado
+                        const targetId = botao.getAttribute("data-target");
+                        const targetDiv = document.getElementById(targetId);
+                        if (targetDiv) {
+                            targetDiv.style.display = "block";
+                        }
+
+                        // Altera o título
+                        const novoTitulo = botao.getAttribute("data-titulo");
+                        title.textContent = novoTitulo;
+                    });
+                });
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
+    </body>
+</html>
