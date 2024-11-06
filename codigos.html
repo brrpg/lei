@@ -71,7 +71,7 @@
                         <button class="nav-link" data-target="ep" data-titulo="Código de Ética Parlamentar">Ética Parlamentar</button>
                     </li>
                 </ul>
-                <h2 id="title" class="text-center text-uppercase mb-5 poppins">Códigos</h2>
+                <h2 id="title" class="text-center mb-5 poppins">Códigos</h2>
                 <div id="clpc" style="display: none;left: 0; width: 100%; height: 0; position: relative; padding-bottom: 65em;">
                     <iframe src="https://docs.google.com/document/d/1aQQWnw79toz8LEeEoc1WESmhD2sTobxm/preview?usp=embed_googleplus" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen></iframe>
                 </div>
@@ -118,30 +118,47 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const botoes = document.querySelectorAll(".nav button");
-                const divs = document.querySelectorAll("div[id]"); // Seleciona todas as divs com id
-                const title = document.getElementById("title");
+                    const botoes = document.querySelectorAll(".nav button");
+                    const divs = document.querySelectorAll("div[id]"); // Seleciona todas as divs com id
+                    const title = document.getElementById("title");
 
-                botoes.forEach(botao => {
-                    botao.addEventListener("click", () => {
+                    // Função para mostrar a div correspondente
+                    function mostrarDiv(id) {
                         // Oculta todas as divs
                         divs.forEach(div => {
                             div.style.display = "none";
                         });
 
-                        // Exibe a div correspondente ao botão clicado
-                        const targetId = botao.getAttribute("data-target");
-                        const targetDiv = document.getElementById(targetId);
+                        // Exibe a div correspondente ao ID
+                        const targetDiv = document.getElementById(id);
                         if (targetDiv) {
                             targetDiv.style.display = "block";
                         }
 
-                        // Altera o título
-                        const novoTitulo = botao.getAttribute("data-titulo");
-                        title.textContent = novoTitulo;
+                        // Alterar o título
+                        const botao = document.querySelector(`button[data-target="${id}"]`);
+                        if (botao) {
+                            const novoTitulo = botao.getAttribute("data-titulo");
+                            title.textContent = novoTitulo;
+                        }
+                    }
+
+                    // Verifica o hash da URL e exibe a div correspondente ao carregar a página
+                    const hash = window.location.hash.substring(1); // Remove o '#'
+                    if (hash) {
+                        mostrarDiv(hash);
+                    }
+
+                    // Quando um botão é clicado
+                    botoes.forEach(botao => {
+                        botao.addEventListener("click", () => {
+                            const targetId = botao.getAttribute("data-target");
+                            // Altera o hash na URL para refletir a div selecionada
+                            window.location.hash = targetId;
+                            mostrarDiv(targetId);
+                        });
                     });
                 });
-            });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
