@@ -143,18 +143,18 @@ document.getElementById('Formulario').addEventListener('submit', function (event
     if (cargo === 'Presidente da República') {
         frase1HTML = `REPÚBLICA FEDERATIVA DO BRASIL`;
         frase2HTML = `Gabinete do Presidente da República`;
-        frase1Sim = `**<:rfb:1287542222371295387> | REPÚBLICA FEDERATIVA DO BRASIL**`;
+        frase1Sim = `<:rfb:1287542222371295387> | REPÚBLICA FEDERATIVA DO BRASIL`;
         frase2Sim = `Gabinete do Presidente da República`;
     } else if (cargo === 'Ministro') {
         frase1HTML = `REPÚBLICA FEDERATIVA DO BRASIL`;
         frase2HTML = `${orgao}`;
-        frase1Sim = `**<:rfb:1287542222371295387> | REPÚBLICA FEDERATIVA DO BRASIL**`;
-        frase2Sim = `**<:planalto2:1313532794567135275> | ${orgao}**`;
+        frase1Sim = `<:rfb:1287542222371295387> | REPÚBLICA FEDERATIVA DO BRASIL`;
+        frase2Sim = `<:planalto2:1313532794567135275> | ${orgao}`;
     } else if (cargo === 'Governador') {
         frase1HTML = `${diario}`;
         frase2HTML = `Gabinete do Governador do Estado do ${estadoNome}`;
-        frase1Sim = `**<${emoji}> | ${diario}**`;
-        frase2Sim = `**Gabinete do Governador do Estado do ${estadoNome}**`;
+        frase1Sim = `<${emoji}> | ${diario}`;
+        frase2Sim = `Gabinete do Governador do Estado do ${estadoNome}`;
     } else if (cargo === 'Secretário') {
         frase1HTML = `${diario}`;
         frase2HTML = `${orgao}`;
