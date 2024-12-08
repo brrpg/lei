@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br" class="h-100">
     <head>
-        <title>Formulário de Documentos</title>
+        <title>Menu Administrativo</title>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Vitor Capelli">
         <link rel="icon" href="./img/logo.png" type="image/png">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -45,7 +46,6 @@
                 </a>
                 <ul class="nav nav-pills poppins">
                     <li class="nav-item"><a href="./" class="nav-link text-reset">Menu</a></li>
-                    <li class="nav-item"><a href="./form" class="nav-link text-reset">Formulário</a></li>
                     <li class="nav-item"><a href="./constituicao" class="nav-link text-reset">Constituição</a></li>
                     <li class="nav-item"><a href="./codigos" class="nav-link text-reset">Códigos</a></li>
                     <li class="nav-item"><a href="./leis" class="nav-link text-reset">Legislação</a></li>
@@ -60,7 +60,7 @@
             <form id="Formulario">
                 <h4>Dados do documentos</h4>
                 <div class="row mb-4">
-                    <div class="col">
+                    <div class="col my-2">
                         <label class="form-label" for="categoria">Categoria</label>
                         <select class="form-select" id="categoria" required>
                             <option value="Decreto">Decreto</option>
@@ -70,28 +70,28 @@
                             <option value="Instrução Normativa">Instrução Normativa</option>
                         </select>
                     </div>
-                    <div class="col">
+                    <div class="col my-2">
                         <label class="form-label" for="idnum">Identificação</label>
                         <div class="input-group">
                             <input type="number" class="form-control" id="idnum" placeholder="000" required>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col my-2">
                         <label class="form-label" for="data">Data</label>
                         <input type="date" class="form-control" id="data" name="data" required>
                     </div>
-                    <div class="col">
+                    <div class="col my-2">
                         <label for="cidade" class="form-label">Cidade</label>
                         <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Brasília" required>
                     </div>
                 </div>
-                <h4>Dados do autor</h4>
+                <h4 class="mt-3">Dados do autor</h4>
                 <div class="row mb-3">
-                    <div class="col">
+                    <div class="col-12 col-lg-3 my-2">
                         <label for="nome" class="form-label">Nome</label>
                         <input type="text" class="form-control" id="nome" name="nome" placeholder="Geraldo Alckmin" required>
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-lg-3 my-2">
                         <label class="form-label" for="cargo">Cargo</label>
                         <select class="form-select" id="cargo" required>
                             <option value="Presidente da República">Presidente</option>
@@ -100,11 +100,11 @@
                             <option value="Secretário">Secretário</option>
                         </select>
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-lg-3 my-2">
                         <label for="orgao" class="form-label">Órgão</label>
                         <input type="texte" class="form-control" id="orgao" name="orgao" placeholder="Ministério/Secretaria da Pesca" disabled>
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-lg-3 my-2">
                         <label class="form-label" for="estado">Estado</label>
                         <select class="form-select" id="estado" disabled>
                             <option value="SP">São Paulo</option>
@@ -115,7 +115,7 @@
                         </select>
                     </div>
                 </div>
-                <h4>Corpo do documento</h4>
+                <h4 class="mt-3">Corpo do documento</h4>
                 <div class="row mb-3">
                     <div class="col">
                         <label for="prefacio" class="form-label">Prefácio</label>
@@ -128,7 +128,7 @@
                     <button type="submit" class="btn btn-success">Enviar</button>
                 </div>
             </form>
-            <div id="resultado" class="mt-4">
+            <div id="resultado" class="mt-5 pt-3">
                 <div class="card p-0 my-3">
                     <div class="card-header d-flex">
                         <p class="m-0 fs-5">Texto:</p>
