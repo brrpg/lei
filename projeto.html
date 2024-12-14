@@ -17,10 +17,13 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+        <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
         <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
         <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
         <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.7/purify.min.js"></script>
     </head>
     <style>
         .montserrat {
@@ -63,7 +66,7 @@
             <form id="form">
                 <h4>Dados do projeto</h4>
                 <div class="row mb-4">
-                    <div class="col my-2">
+                    <div class="col-6 col-sm-3 my-2">
                         <label class="form-label" for="categoria">Categoria</label>
                         <select class="form-select" id="categoria" required>
                             <option value="PL">PL</option>
@@ -73,15 +76,15 @@
                             <option value="PLC">PLC</option>
                         </select>
                     </div>
-                    <div class="col my-2">
+                    <div class="col-6 col-sm-3 my-2">
                         <label class="form-label" for="idnum">Identificação</label>
                         <input type="number" class="form-control" id="idnum" value="000" required>
                     </div>
-                    <div class="col my-2">
+                    <div class="col-6 col-sm-3 my-2">
                         <label class="form-label" for="data">Data</label>
                         <input type="date" class="form-control" id="data" name="data" required>
                     </div>
-                    <div class="col my-2">
+                    <div class="col-6 col-sm-3 my-2">
                         <label for="cidade" class="form-label">Cidade</label>
                         <input type="text" class="form-control" id="cidade" name="cidade" value="Brasília" required>
                     </div>
@@ -120,7 +123,7 @@
                 </div>
                 <h4>Dados do documento</h4>
                 <div class="row mb-3">
-                    <div class="col my-2">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-3 my-2">
                         <label class="form-label" for="fonte">Fonte</label>
                         <select class="form-select" id="fonte" required>
                             <option value="helvetica">Helvetica</option>
@@ -128,7 +131,7 @@
                             <option value="times">Times</option>
                         </select>
                     </div>
-                    <div class="col my-2">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-2 my-2">
                         <label class="form-label" for="justificativa">Justificativa</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault1" id="justSim" checked>
@@ -139,7 +142,7 @@
                             <label class="form-check-label" for="justNao">Não</label>
                         </div>
                     </div>
-                    <div class="col my-2">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-2 my-2">
                         <label class="form-label" for="formato">Formatação</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault2" id="formaArt" checked>
@@ -148,6 +151,28 @@
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault2" id="formaLivre">
                             <label class="form-check-label" for="formaLivre">Formato livre</label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-2 my-2">
+                        <label class="form-label" for="urgente">Regime de Urgência</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault3" id="urgSim" checked>
+                            <label class="form-check-label" for="urgSim">Sim</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault3" id="urgNao">
+                            <label class="form-check-label" for="urgNao">Não</label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-3 my-2">
+                        <label class="form-label" for="tramitacao">Tramitação Inicial</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault4" id="tramSF" checked>
+                            <label class="form-check-label" for="tramSF">Senado Federal</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault4" id="tramCD">
+                            <label class="form-check-label" for="tramCD">Câmara dos Deputados</label>
                         </div>
                     </div>
                 </div>
@@ -179,16 +204,16 @@
             <div class="mt-5 pt-3">
                 <div class="card p-0 my-3">
                     <div class="card-header d-flex">
-                        <p class="m-0 fs-5">Texto:</p>
+                        <p class="m-0 fs-5">Texto do Projeto:</p>
                         <button id="copiarResultado" style="height: fit-content;" class="btn ms-auto"><i class="fa-solid fa-copy"></i></button>
                     </div>
                     <div class="card-body bg-light">
-                        <div style="font-family: 'EB Garamond', Times, serif;" id="resultado"></div>
+                        <div id="resultado"></div>
                     </div>
                 </div>
                 <div class="card p-0 my-3">
                     <div class="card-header d-flex">
-                        <p class="m-0 fs-5">Código:</p>
+                        <p class="m-0 fs-5">Código para protocolar:</p>
                         <button id="copiarCodigo" style="height: fit-content;" class="btn ms-auto"><i class="fa-solid fa-copy"></i></button>
                     </div>
                     <div class="card-body bg-light">
@@ -199,14 +224,12 @@
         </main>
         <!-- Toast -->
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            <div id="toast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
-                aria-atomic="true">
+            <div id="toast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         Código copiado com sucesso!
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
             </div>
         </div>
