@@ -147,6 +147,7 @@ async function createPDF() {
         prefacio: document.getElementById('prefacio').value || "",
         fonte: document.getElementById('fonte').value || "helvetica",
         justificativa: document.getElementById('justificativa').value || "",
+        textoLivre: document.getElementById('livre').value || "",
     };
 
     const categoria = formData.categoria;
@@ -313,12 +314,20 @@ async function createPDF() {
         }
     }
 
-    // Adicionar texto final
-    const textoFinal = `Art. ${campoId + 1}º - Este ${categoriaNome} entra em vigor na data de sua publicação.`;
     verificarQuebraPagina(10);
-    const textoFinalQuebrado = doc.splitTextToSize(textoFinal, 180);
-    doc.text(textoFinalQuebrado, 10, y);
-    y += textoFinalQuebrado.length * 6;
+    doc.setFont(formData.fonte, 'normal');
+    doc.text(`${formData.textoLivre}`, 10, y, { align: 'left' });
+
+    // Adicionar texto final
+    if (formaArt.checked) {
+        y += 10;
+        doc.setFont(formData.fonte, 'normal');
+        const textoFinal = `Art. ${campoId + 1}º - Este ${categoriaNome} entra em vigor na data de sua publicação.`;
+        verificarQuebraPagina(10);
+        const textoFinalQuebrado = doc.splitTextToSize(textoFinal, 180);
+        doc.text(textoFinalQuebrado, 10, y);
+        y += textoFinalQuebrado.length * 6;
+    }
 
     // Cidade e data
     y += 20;
@@ -361,6 +370,7 @@ async function createPDF() {
 
 // Mostrar os dados do formulário em uma div
 function showInDiv() {
+
     const formData = {
         categoria: document.getElementById('categoria').value || "",
         id: document.getElementById('idnum').value || "",
@@ -371,17 +381,185 @@ function showInDiv() {
         orgao: document.getElementById('orgao').value || "",
         estado: document.getElementById('estado').value || "",
         prefacio: document.getElementById('prefacio').value || "",
+        textoLivre: document.getElementById('livre').value || "",
     };
 
+    const categoria = formData.categoria;
+    let categoriaNome;
+    let categoriaCodigo;
+    switch (categoria) {
+        case 'PL':
+            categoriaNome = 'Projeto de Lei';
+            categoriaCodigo = '(X) PL | ( ) PEC | ( ) PER | ( ) PDL | ( ) PLC | ( ) PPA/LDO/PLO | ( ) REQ |  ( ) Outro';
+            break;
+        case 'PEC':
+            categoriaNome = 'Proposta de Emenda à Constituição';
+            categoriaCodigo = '( ) PL | (X) PEC | ( ) PER | ( ) PDL | ( ) PLC | ( ) PPA/LDO/PLO | ( ) REQ |  ( ) Outro';
+            break;
+        case 'PER':
+            categoriaNome = 'Proposta de Emenda ao Regimento';
+            categoriaCodigo = '( ) PL | ( ) PEC | (X) PER | ( ) PDL | ( ) PLC | ( ) PPA/LDO/PLO | ( ) REQ |  ( ) Outro';
+            break;
+        case 'PDL':
+            categoriaNome = 'Projeto de Decreto Legislativo';
+            categoriaCodigo = '( ) PL | ( ) PEC | ( ) PER | (X) PDL | ( ) PLC | ( ) PPA/LDO/PLO | ( ) REQ |  ( ) Outro';
+            break;
+        case 'PLC':
+            categoriaNome = 'Projeto de Lei Complementar';
+            categoriaCodigo = '( ) PL | ( ) PEC | ( ) PER | ( ) PDL | (X) PLC | ( ) PPA/LDO/PLO | ( ) REQ |  ( ) Outro';
+            break;
+        default:
+            categoriaNome = 'Categoria Desconhecida';
+            categoriaCodigo = '( ) PL | ( ) PEC | ( ) PER | ( ) PDL | ( ) PLC | ( ) PPA/LDO/PLO | ( ) REQ |  (X) Outro';
+    }
+
+    let frase1;
+    let orgao;
+    switch(formData.cargo){
+        case 'Presidente':
+            frase1 = 'O PRESIDENTE DA REPÚBLICA no uso da atribuição que lhe confere na Constituição Federal, ';
+            formData.orgao = 'Presidência da República';
+            break;
+        case 'Senador':
+            frase1 = 'O Congresso Nacional ';
+            formData.orgao = 'Senado Federal';
+            break;
+        case 'Deputado':
+            frase1 = 'O Congresso Nacional ';
+            formData.orgao = 'Câmara dos Deputados';
+            break;
+        case 'Governador':
+            frase1 = 'O GOVERNADOR no uso da atribuição que lhe confere na Constituição Federal, ';
+            formData.orgao = `Governo do Estado ${formData.estado}`;
+            break;
+        default:
+            frase1 = 'O Congresso Nacional ';
+    }
+
+    let frase2;
+    if (formData.cargo === 'Presidente' && formData.categoria === 'PL' || formData.cargo === 'Governador' && formData.categoria === 'PL') {
+        frase2 = 'protocola o seguinte Projeto de Lei:';
+    } else if (formData.cargo === 'Presidente' && formData.categoria ==='PEC' || formData.cargo === 'Governador' && formData.categoria ==='PEC') {
+        frase2 = 'protocola a seguinte Proposta de Emenda à Constituição:'
+    } else if (formData.cargo === 'Presidente' && formData.categoria ==='PER' || formData.cargo === 'Governador' && formData.categoria ==='PER') {
+        frase2 = 'protocola a seguinte Proposta de Emenda ao Regimento:'
+    } else if (formData.cargo === 'Presidente' && formData.categoria ==='PDL' || formData.cargo === 'Governador' && formData.categoria ==='PDL') {
+        frase2 = 'protocola o seguinte Projeto de Decreto Legislativo:'
+    } else if (formData.cargo === 'Presidente' && formData.categoria ==='PLC' || formData.cargo === 'Governador' && formData.categoria ==='PLC') {
+        frase2 = 'protocola o seguinte Projeto de Lei Complementar:'
+    } else {
+        frase2 = 'decreta:';
+    }
+
+    let tramiCodigo;
+    let urgCodigo;
+    const tramSF = document.getElementById('tramSF');
+    const tramCD = document.getElementById('tramCD');
+    const urgSim = document.getElementById('urgSim');
+    const urgNao = document.getElementById('urgNao');
+
+    if (tramSF.checked) {
+        tramiCodigo = '(X) Senado Federal | ( ) Câmara dos Deputados';
+    } else if (tramCD.checked) {
+        tramiCodigo = '( ) Senado Federal | (X) Câmara dos Deputados';
+    }
+    if (urgSim.checked) {
+        urgCodigo = '(X) Sim | ( ) Não';
+    } else if (urgNao.checked) {
+        urgCodigo = '( ) Sim | (X) Não';
+    }
+    
+    const frase12 = frase1 + frase2;
+
+    const categoriaNomeM = categoriaNome ? categoriaNome.toUpperCase() : '';
+
+    // Converte a data para o objeto Date
+    const dataObj = new Date(formData.data + 'T00:00:00');;
+    const ano = dataObj.getFullYear();
+
+    // Formato 1: 07/12/2024 (dd/mm/yyyy)
+    const dataFormatada1 = dataObj.toLocaleDateString('pt-BR');
+
+    // Formato 2: 7 de dezembro de 2024
+    const dataFormatada2 = dataObj.toLocaleDateString('pt-BR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    // Formato 3: 7 DE DEZEMBRO DE 2024 (tudo em maiúsculo)
+    const dataFormatada3 = dataFormatada2.toUpperCase();
+
+    // Função para formatar o órgão, removendo a primeira palavra
+    const formatarOrgao = (orgao) => orgao.split(' ').slice(1).join(' ');
+
+    // Criando a variável combinada
+    const cargoOrgaoFormatado = `${formData.cargo} ${formatarOrgao(formData.orgao)}`;
+
+    // Formato Cargo
+    if(formData.cargo === 'Presidente'){
+        cargoFormatado = 'Presidente da República';
+    } else if(formData.cargo === 'Governador'){
+        cargoFormatado = 'Governador';
+    } else if(formData.cargo === 'Ministro' || formData.cargo === 'Secretário'){
+        cargoFormatado = `${formData.cargo} ${formatarOrgao(formData.orgao)}`;
+    } else if(formData.cargo === 'Deputado'){
+        cargoFormatado = 'Deputado Federal';
+    } else if(formData.cargo === 'Senador'){
+        cargoFormatado = 'Senador';
+    }
+
+    let camposAdicionaisTextoHTML = '';
+    let camposAdicionaisTextoSimples = '';
+    let ultimoCampoId = campoId + 1;
+    for (let i = 1; i <= campoId; i++) {
+        const campoExtra = document.querySelector(`textarea[name="campoExtra${i}"]`);
+        if (campoExtra) {
+            // Adiciona o "º" ao número do campo
+            const campoComSufixo = `${i}º`;
+
+            // Formatação para o resultado (HTML)
+            camposAdicionaisTextoHTML += `<p><b>Art. ${campoComSufixo} -</b> ${campoExtra.value}</p>`;
+
+            // Formatação para o código (texto simples)
+            camposAdicionaisTextoSimples += `Art. ${campoComSufixo} - ${campoExtra.value}\n\n`;
+        }
+    }
+
+    // Adiciona o "Fim do documento" como o último campo
+    const fimDoDocumentoCampo = `${ultimoCampoId}º`; // A numeração segue a sequência
+    camposFinalTextoHTML = `<b>Art. ${fimDoDocumentoCampo} -</b> Este ${categoriaNome} entra em vigor na data de sua publicação.</p>`;
+    camposFinalTextoSimples = `Art. ${fimDoDocumentoCampo} - Este ${categoriaNome} entra em vigor na data de sua publicação.</p>\n`;
+
+    let fraseFinal;
+    if (formaArt.checked) {
+        fraseFinal = camposAdicionaisTextoHTML + camposFinalTextoHTML;
+    } else{
+        fraseFinal = formData.textoLivre;
+    }
+
     const resultadoDiv = document.getElementById('resultado');
-    resultadoDiv.innerHTML = `
-        <h4>Resultado:</h4>
-        <p><strong>Nome:</strong> ${formData.nome}</p>
-        <p><strong>Categoria:</strong> ${formData.categoria}</p>
-        <p><strong>Data:</strong> ${formData.data}</p>
-        <p><strong>Cidade:</strong> ${formData.cidade}</p>
-        <p><strong>Prefácio:</strong> ${formData.prefacio}</p>
+    resultadoDiv.innerHTML = `<h4 class="text-center mb-4">${categoriaNomeM} Nº${formData.id}, DE ${dataFormatada3}</h4>
+    <p class="text-end">${formData.prefacio}</p>
+    <p>${frase12}</p>
+    ${fraseFinal}
+    <p class="mt-4">Brasília, ${dataFormatada2}</p>
+    <p class="mt-4 mb-1 fw-bold">${formData.nome}</p>
+    <p class="fst-italic">${cargoOrgaoFormatado}</p>
     `;
+
+    const codigoDiv = document.getElementById('codigo');
+    codigoDiv.innerText = `**<:CN:1292382552333484104> | CONGRESSO NACIONAL**
+*Secretaria de Protocolos*
+
+**Autor:** ${formData.nome}
+**Tipo:** ${categoriaCodigo}
+**Origem:** ${formData.orgao} 
+
+**Tramitação Inicial:** ${tramiCodigo}
+**Regime de Urgência:** ${urgCodigo}
+
+**Ementa:** ${formData.prefacio}`;
 }
 
 function previewPDF() {
@@ -414,3 +592,23 @@ function downloadPDF() {
         console.error("Erro ao criar o PDF:", error);
     });
 }
+
+// Copiar o texto do #codigo
+document.getElementById('copiarCodigo').addEventListener('click', function () {
+    const codigo = document.getElementById('codigo').innerText;
+    navigator.clipboard.writeText(codigo).then(() => {
+        const toastEl = document.getElementById('toast');
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }).catch(err => console.error('Erro ao copiar:', err));
+});
+
+// Copiar o texto do #resultado
+document.getElementById('copiarResultado').addEventListener('click', function () {
+    const resultado = document.getElementById('resultado').innerText;
+    navigator.clipboard.writeText(resultado).then(() => {
+        const toastEl = document.getElementById('toast');
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }).catch(err => console.error('Erro ao copiar:', err));
+});
