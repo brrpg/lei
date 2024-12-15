@@ -553,7 +553,7 @@ camposAdicionaisTextoSimples += camposFinalTextoSimples;
     ${fraseFinal}
     <p class="mt-4">Brasília, ${dataFormatada2}</p>
     <p class="mt-4 mb-1 fw-bold">${formData.nome}</p>
-    <p class="fst-italic">${cargoOrgaoFormatado}</p>
+    <p class="fst-italic">${cargoFormatado}</p>
     `;
 
     const codigoDiv = document.getElementById('codigo');
