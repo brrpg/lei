@@ -303,16 +303,17 @@ async function createPDF() {
 
     // Adicionar campos extras
     y += 10;
-    for (let i = 1; i <= campoId; i++) {
-        const campoExtra = document.querySelector(`textarea[name="campoExtra${i}"]`);
-        if (campoExtra) {
+    let artigoIndex = 1; // Variável para contar os artigos corretamente
+    document.querySelectorAll('textarea[name^="campoExtra"]').forEach((campoExtra) => {
+        if (campoExtra.value.trim() !== "") {
             verificarQuebraPagina(10);
-            const textoCampo = `Art. ${i}º - ${campoExtra.value}`;
+            const textoCampo = `Art. ${artigoIndex}º - ${campoExtra.value}`;
             const textoQuebrado = doc.splitTextToSize(textoCampo, 180);
             doc.text(textoQuebrado, 10, y);
             y += textoQuebrado.length * 6; // Ajuste para múltiplas linhas
+            artigoIndex++; // Incrementa para o próximo artigo
         }
-    }
+    });
 
     verificarQuebraPagina(10);
     doc.setFont(formData.fonte, 'normal');
@@ -322,7 +323,7 @@ async function createPDF() {
     if (formaArt.checked) {
         y += 10;
         doc.setFont(formData.fonte, 'normal');
-        const textoFinal = `Art. ${campoId + 1}º - Este ${categoriaNome} entra em vigor na data de sua publicação.`;
+        const textoFinal = `Art. ${artigoIndex}º - Este ${categoriaNome} entra em vigor na data de sua publicação.`;
         verificarQuebraPagina(10);
         const textoFinalQuebrado = doc.splitTextToSize(textoFinal, 180);
         doc.text(textoFinalQuebrado, 10, y);
@@ -510,30 +511,37 @@ function showInDiv() {
     }
 
     let camposAdicionaisTextoHTML = '';
-    let camposAdicionaisTextoSimples = '';
-    let ultimoCampoId = campoId + 1;
-    for (let i = 1; i <= campoId; i++) {
-        const campoExtra = document.querySelector(`textarea[name="campoExtra${i}"]`);
-        if (campoExtra) {
-            // Adiciona o "º" ao número do campo
-            const campoComSufixo = `${i}º`;
+let camposAdicionaisTextoSimples = '';
+let artigoIndex = 1; // Inicializa a contagem dos artigos
 
-            // Formatação para o resultado (HTML)
-            camposAdicionaisTextoHTML += `<p><b>Art. ${campoComSufixo} -</b> ${campoExtra.value}</p>`;
+// Itera pelos campos existentes
+document.querySelectorAll('textarea[name^="campoExtra"]').forEach((campoExtra) => {
+    if (campoExtra.value.trim() !== "") {
+        // Adiciona o "º" ao número do artigo
+        const campoComSufixo = `${artigoIndex}º`;
 
-            // Formatação para o código (texto simples)
-            camposAdicionaisTextoSimples += `Art. ${campoComSufixo} - ${campoExtra.value}\n\n`;
-        }
+        // Formatação para o resultado (HTML)
+        camposAdicionaisTextoHTML += `<p><b>Art. ${campoComSufixo} -</b> ${campoExtra.value}</p>`;
+
+        // Formatação para o código (texto simples)
+        camposAdicionaisTextoSimples += `Art. ${campoComSufixo} - ${campoExtra.value}\n\n`;
+
+        artigoIndex++; // Incrementa o índice para o próximo artigo
     }
+});
 
-    // Adiciona o "Fim do documento" como o último campo
-    const fimDoDocumentoCampo = `${ultimoCampoId}º`; // A numeração segue a sequência
-    camposFinalTextoHTML = `<b>Art. ${fimDoDocumentoCampo} -</b> Este ${categoriaNome} entra em vigor na data de sua publicação.</p>`;
-    camposFinalTextoSimples = `Art. ${fimDoDocumentoCampo} - Este ${categoriaNome} entra em vigor na data de sua publicação.</p>\n`;
+// Adiciona o texto final
+const fimDoDocumentoCampo = `${artigoIndex}º`; // Usa o índice atualizado
+const camposFinalTextoHTML = `<p><b>Art. ${fimDoDocumentoCampo} -</b> Este ${categoriaNome} entra em vigor na data de sua publicação.</p>`;
+const camposFinalTextoSimples = `Art. ${fimDoDocumentoCampo} - Este ${categoriaNome} entra em vigor na data de sua publicação.\n`;
+
+// Combina os textos adicionais e o final
+camposAdicionaisTextoHTML += camposFinalTextoHTML;
+camposAdicionaisTextoSimples += camposFinalTextoSimples;
 
     let fraseFinal;
     if (formaArt.checked) {
-        fraseFinal = camposAdicionaisTextoHTML + camposFinalTextoHTML;
+        fraseFinal = camposAdicionaisTextoHTML;
     } else{
         fraseFinal = formData.textoLivre;
     }
